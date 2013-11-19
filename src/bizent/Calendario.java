@@ -13,28 +13,28 @@ import java.util.*;
 
 public class Calendario extends JPanel {
 
-    private static JLabel sun;
-    private static JLabel mon;
-    private static JLabel tue;
-    private static JLabel wed;
-    private static JLabel thu;
-    private static JLabel fri;
-    private static JLabel sat;
+    private JLabel sun;
+    private JLabel mon;
+    private JLabel tue;
+    private JLabel wed;
+    private JLabel thu;
+    private JLabel fri;
+    private JLabel sat;
     
     private Color c;
     private static Color n;
 
 
-    private static JPanel mainpanel;                   
-    private static JPanel p[]= new JPanel[42];            
+    private JPanel mainpanel;                   
+    private JPanel p[]= new JPanel[42];            
     private static JButton b[]= new JButton[31];       
     
         
         private static Calendar fecha;
         private JPanel mainp;        
         private JTextField date; 
-        private static JComboBox month;
-        private static JTextField year; 
+        private JComboBox month;
+        private JTextField year; 
         private JButton sb[]= new JButton[2]; 
         private JTable tabla;
    
@@ -144,6 +144,8 @@ public class Calendario extends JPanel {
         c=c.brighter();
         n=Color.LIGHT_GRAY;
         n=new Color(238,238,238);
+        n=sb[0].getBackground();
+        
         for (int x=0;x<42;x++){
             p[x]= new JPanel();
             p[x].setLayout(new GridLayout(1,1));
@@ -425,35 +427,8 @@ public void rearmar()
 
 public static void resetearColores()
 {
-                mainpanel.removeAll();
-                
-                mainpanel.add(sun);
-                mainpanel.add(mon);
-                mainpanel.add(tue);
-                mainpanel.add(wed);
-                mainpanel.add(thu);
-                mainpanel.add(fri);
-                mainpanel.add(sat);
-                for (int x=0;x<42;x++){
-                    
-                    p[x].removeAll();
-                    mainpanel.add(p[x]);
-                }
-                int ye=0;
-                try
-                {
-                 ye=Integer.parseInt(year.getText());
-                }
-                catch (Exception e)
-                {
-                            
-                }
-                Calendar cal = new GregorianCalendar(ye, month.getSelectedIndex(), 1);
-                int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-                for (int i=0;i<31;i++){
-                     p[dayOfWeek-1].add(b[i]);
-                     b[i].setBackground(n);
-                    dayOfWeek++;
-                }
+    for (int i=0;i<31;i++){
+        b[i].setBackground(n);
+    }
 }
 }
