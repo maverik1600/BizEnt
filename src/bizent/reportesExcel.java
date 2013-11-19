@@ -160,6 +160,37 @@ public class reportesExcel {
                   
             }
             
+            //Hoja Plazos Fijos
+            sheet = workbook.createSheet("Inversiones", 3);
+            JTable inv=new JTable (BizEnt.db.getInversionesTableModel());
+            for (int i=1; i<inv.getColumnCount(); i++)
+            {
+                Label label = new Label((i-1), 0, inv.getColumnName(i), times12format);
+                sheet.addCell(label); 
+                cell=sheet.getColumnView((i-1));
+                cell.setAutosize(true);
+                sheet.setColumnView((i-1), cell); 
+            }
+             
+            for (int i=0; i<inv.getRowCount(); i++)
+            {
+                
+                Label label = new Label(0, (i+1),((String)inv.getValueAt(i, 1)));
+                sheet.addCell(label); 
+                label = new Label(1, (i+1), (String)inv.getValueAt(i, 2));
+                sheet.addCell(label);
+                customDateFormat = new DateFormat ("dd MMM yyyy"); 
+                dateFormat = new WritableCellFormat (customDateFormat);
+                date=(Date)inv.getValueAt(i, 3);
+                DateTime dateCell = new DateTime(2, (i+1), date, dateFormat); 
+                sheet.addCell(dateCell);
+                label = new Label(3, (i+1), ""+(Double)inv.getValueAt(i, 4)+"");
+                sheet.addCell(label);
+                date=(Date)inv.getValueAt(i, 5);
+                dateCell = new DateTime(4, (i+1), date, dateFormat); 
+                sheet.addCell(dateCell);  
+            }
+            
             workbook.write(); 
             workbook.close();
             b=true;

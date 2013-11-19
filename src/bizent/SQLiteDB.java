@@ -859,6 +859,56 @@ System.out.println(BizEnt.db.getCuenta(newMovimiento.getCuenta().getId()).getSal
         }
     }
     
+    public String[] getAlertasVencimientos() {
+        String[] s=new String[2];
+        Calendar f= Calendar.getInstance();
+            f.set(Calendar.HOUR_OF_DAY, 23);
+            f.set(Calendar.MINUTE, 59);
+            f.set(Calendar.SECOND, 59);
+            f.set(Calendar.MILLISECOND, 999);
+            java.util.Date d= f.getTime();
+            f.set(Calendar.HOUR_OF_DAY, 0);
+            f.set(Calendar.MINUTE, 0);
+            f.set(Calendar.SECOND, 0);
+            f.set(Calendar.MILLISECOND, 0);
+            f.add(Calendar.DATE, 1);
+            String prox="";
+            String venc="";
+            Vencimiento v;
+            Calendar c= Calendar.getInstance();
+            //String ab="SELECT * FROM vencimientos WHERE diasAnticip < '"+new Timestamp(d.getTime())+"' AND diasAnticip not NULL";
+        String ab="SELECT * FROM vencimientos WHERE diasAnticip < '"+new Timestamp(d.getTime())+"' AND registrado = 0 AND fecha > '"+new Timestamp(f.getTime().getTime())+"' order by fecha";
+        ResultSet  rset   = executeQuery(ab);
+        
+        try {
+            while (rset.next()) {
+                int a=rset.getInt("id");
+                v=getVencimiento(a);
+                c.setTime(v.getFecha());
+                prox=prox+c.get(Calendar.DATE)+"/"+c.get(Calendar.MONTH)+"/"+c.get(Calendar.YEAR)+"   "+v.getCateg()+": "+v.getNombre();
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
+        }
+        
+        //Vencimientos a Efectuar
+        ab="SELECT * FROM vencimientos WHERE fecha < '"+new Timestamp(f.getTime().getTime())+"' AND registrado = 0 order by fecha";
+        rset   = executeQuery(ab);
+        try {
+            while (rset.next()) {
+                int a=rset.getInt("id");
+                v=getVencimiento(a);
+                c.setTime(v.getFecha());
+                venc=venc+c.get(Calendar.DATE)+"/"+c.get(Calendar.MONTH)+"/"+c.get(Calendar.YEAR)+"   "+v.getCateg()+": "+v.getNombre()+"\n";
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
+        }
+        s[0]=venc;
+        s[1]=prox;
+        return s;
+    }
+    
    public ArrayList <Calendar> getVencimientosMes(Calendar f) {
             f.set(Calendar.HOUR_OF_DAY, 0);
             f.set(Calendar.MINUTE, 0);

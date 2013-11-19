@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  *
- * @author suri
+ * @author Surai
  */
 public class Vencimiento {
     
@@ -58,9 +58,7 @@ public class Vencimiento {
             this.diasAnticip=null;
         }
         else
-        {/*
-            this.diasAnticip=Calendar.getInstance();
-             this.diasAnticip.setTime(diasAnticip);*/
+        {
             this.diasAnticip=diasAnticip;
             
         }

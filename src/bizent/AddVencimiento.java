@@ -7,8 +7,7 @@ package bizent;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
-//import javax.swing.DefaultComboBoxModel;
-//import javax.swing.JComboBox;
+
 import javax.swing.JOptionPane;
 import javax.swing.text.PlainDocument;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -21,13 +20,9 @@ import javax.swing.tree.TreePath;
  */
 public class AddVencimiento extends javax.swing.JDialog {
     private Vencimiento vencimiento;
-    //private DefaultComboBoxModel<Categoria> modelo;
-    /**
-     * Creates new form AddVencimiento
-     */
+
     public AddVencimiento(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        //BizEnt.db.updateCategoriasComboBoxModel();
         initComponents();
     }
 
@@ -240,7 +235,6 @@ public class AddVencimiento extends javax.swing.JDialog {
         {
             vencimiento.setNombre(txtNombre.getText());
         }
-        //if (Calendar.getInstance().getTime().compareTo(jXDatePicker1.getDate())>0) {
         Calendar aux=Calendar.getInstance();
         aux.set(Calendar.HOUR, 0);
         aux.set(Calendar.MINUTE, 0);
@@ -288,17 +282,6 @@ public class AddVencimiento extends javax.swing.JDialog {
                 }
         }
         
-        /*
-        
-            if (cboxCateg.getSelectedIndex()==0)
-            {
-                vencimiento.setCateg((Categoria) cboxCateg1.getSelectedItem());
-            }
-            else
-            {
-                vencimiento.setCateg((Categoria) cboxCateg.getSelectedItem());
-            }
-          */
         if (getSelectedCateg() == null || getSelectedCateg().getId() == 1) {
             BizEnt.showERROR(this, "Debe seleccionar una categoría.");
             return;
@@ -307,23 +290,20 @@ public class AddVencimiento extends javax.swing.JDialog {
         }
             
             if (ckboxSi.isSelected()) {
-                Date d=jXDatePicker2.getDate();
-                /*
-                Calendar cal=Calendar.getInstance();
-                cal.setTime(d);
-                if (Calendar.getInstance().compareTo(cal)<=0) {
-                    BizEnt.showERROR(this, "La fecha de la alarma no puede ser anterior a la actual.");
-                    return;
-                } else {
-                    /*
-                if (vencimiento.getFecha().compareTo(d)<=0) {
-                    BizEnt.showERROR(this, "La fecha de la alerta debe ser posterior a la del vencimiento");
-                    return;
-                } else {
-                */
+                Calendar a=Calendar.getInstance();
+                a.set(Calendar.HOUR, 0);
+                a.set(Calendar.MINUTE, 0);
+                a.set(Calendar.SECOND, 0);
+                a.set(Calendar.MILLISECOND, 0);
+                if ((jXDatePicker2.getDate()).compareTo(a.getTime())<0) {
+                BizEnt.showERROR(this, "La fecha de alarma no puede ser anterior a la actual.");
+                return;
+                }
+                else
+                {
+                    Date d=jXDatePicker2.getDate();
                     vencimiento.setDiasAnticip(d);
-                //}
-               // }
+                }
             } else {
                 vencimiento.setDiasAnticip(null);
             }
@@ -332,7 +312,7 @@ public class AddVencimiento extends javax.swing.JDialog {
         try {
             vencimiento.setMonto(Double.parseDouble(txtMonto.getText()));
         } catch (java.lang.NumberFormatException e) {
-            BizEnt.showERROR(this, "El valor debe ser numerico.");
+            BizEnt.showERROR(this, "El monto debe ser numérico.");
             return;
         }
         if (vencimiento.getId() == 0) {
@@ -353,32 +333,7 @@ public class AddVencimiento extends javax.swing.JDialog {
     private void jXDatePicker1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXDatePicker1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jXDatePicker1ActionPerformed
-    /*
-     * private void checkDaysOfMonth(JComboBox cmbDia, JComboBox cmbMes,JComboBox cmbAn) {
-        int      selDia   = cmbDia.getSelectedIndex();
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.MONTH, cmbMes.getSelectedIndex());
-        calendar.set(Calendar.YEAR, Integer.parseInt(cmbAn.getSelectedItem().toString()));
-
-        if (cmbDia.getItemCount() > calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
-            cmbDia.setSelectedIndex(0);
-            while (cmbDia.getItemCount() != calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
-                cmbDia.removeItemAt(cmbDia.getItemCount() - 1);
-            }
-            if (selDia < cmbDia.getItemCount()) {
-                cmbDia.setSelectedIndex(selDia);
-            } else {
-                cmbDia.setSelectedIndex(cmbDia.getItemCount() - 1);
-            }
-        } else if (cmbDia.getItemCount() < calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
-            while (cmbDia.getItemCount() != calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
-                cmbDia.insertItemAt(cmbDia.getItemCount() + 1, cmbDia.getItemCount());
-            }
-        }
-    }
-    */
+    
     private void insertVencimiento()
     {
        
@@ -410,7 +365,7 @@ public class AddVencimiento extends javax.swing.JDialog {
         }
         //</editor-fold>
 
-        /* Create and display the dialog */
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 AddVencimiento dialog = new AddVencimiento(new javax.swing.JFrame(), true);
@@ -438,9 +393,7 @@ public class AddVencimiento extends javax.swing.JDialog {
                 cmboxEstado.setSelectedIndex(1);
                 cmboxEstado.setEnabled(false);
                 txtMonto.setEnabled(false);
-                //cboxCateg1.setEnabled(false);
-                //cboxCateg.setEnabled(false);
-                
+
                 categTree.setEnabled(false);
                 jXDatePicker2.setEnabled(false);
                 ckboxSi.setEnabled(false);
@@ -451,42 +404,7 @@ public class AddVencimiento extends javax.swing.JDialog {
             
             categTree.setModel(BizEnt.db.getCategoriasTreeModel());
             selectTreeNode(vencimiento.getCateg());
-            /*
-            if ((vencimiento.getCateg().getId()==2)||(vencimiento.getCateg().getId()==3))
-            {
-               cboxCateg1.setSelectedItem(vencimiento.getCateg());
-               cboxCateg.setSelectedIndex(0);
-            }
-            else
-            {
-                if ((vencimiento.getCateg().getPid()==2)||(vencimiento.getCateg().getId()==3))
-                {
-                    cboxCateg1.setSelectedIndex(vencimiento.getCateg().getPid()-2);
-                }
-                else if(BizEnt.db.esIngreso(vencimiento.getCateg().getId()))
-                {
-                    cboxCateg1.setSelectedIndex(1);
-                }
-                else
-                {
-                    cboxCateg1.setSelectedIndex(0);
-                }
-                cboxCateg.setSelectedIndex(0);
-                int i=1;
-                while(i<cboxCateg.getItemCount())
-                {
-                    Categoria c=(Categoria) cboxCateg.getItemAt(i);
-                    if(vencimiento.getCateg().getName().equals(c.getName()))
-                    {
-                        cboxCateg.setSelectedIndex(i);
-                        i=cboxCateg.getItemCount();
-                    }
-                    i++;
-                }
-                
-                cboxCateg.setSelectedItem(vencimiento.getCateg());
-            }
-            */
+            
             try
             {
             txtMonto.setText(Double.toString(vencimiento.getMonto()));

@@ -68,6 +68,13 @@ public class BizEnt extends javax.swing.JFrame {
         btnExplorador = new javax.swing.JButton();
         btnExportar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        jPanelVenc = new javax.swing.JPanel();
+        vencHoy = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jTextArea1 = new javax.swing.JTextArea();
+        proxVenc = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jTextArea2 = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
@@ -132,7 +139,9 @@ public class BizEnt extends javax.swing.JFrame {
         jDialogExportar.setLocationRelativeTo(getParent());
 
         jLabel3.setText("Carpeta:");
+        jLabel3.setText("Archivo:");
 
+        txtCarpeta.setEditable(false);
         txtCarpeta.setToolTipText("");
         txtCarpeta.setMinimumSize(new java.awt.Dimension(4, 39));
         txtCarpeta.setName(""); // NOI18N
@@ -190,6 +199,63 @@ public class BizEnt extends javax.swing.JFrame {
                     .addComponent(btnExportar)
                     .addComponent(btnCancelar))
                 .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanelVencLayout = new javax.swing.GroupLayout(jPanelVenc);
+        jPanelVenc.setLayout(jPanelVencLayout);
+        jPanelVencLayout.setHorizontalGroup(
+            jPanelVencLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 184, Short.MAX_VALUE)
+        );
+        jPanelVencLayout.setVerticalGroup(
+            jPanelVencLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 91, Short.MAX_VALUE)
+        );
+
+        jLabel2.setText("Vencimientos a Efectuar:");
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jTextArea1.setAutoscrolls(false);
+        jTextArea1.setBorder(null);
+
+        javax.swing.GroupLayout vencHoyLayout = new javax.swing.GroupLayout(vencHoy);
+        vencHoy.setLayout(vencHoyLayout);
+        vencHoyLayout.setHorizontalGroup(
+            vencHoyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTextArea1)
+            .addGroup(vencHoyLayout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        vencHoyLayout.setVerticalGroup(
+            vencHoyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(vencHoyLayout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextArea1, javax.swing.GroupLayout.DEFAULT_SIZE, 14, Short.MAX_VALUE))
+        );
+
+        jLabel4.setText("Próximos vencimientos:");
+
+        jTextArea2.setColumns(20);
+        jTextArea2.setRows(5);
+
+        javax.swing.GroupLayout proxVencLayout = new javax.swing.GroupLayout(proxVenc);
+        proxVenc.setLayout(proxVencLayout);
+        proxVencLayout.setHorizontalGroup(
+            proxVencLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTextArea2)
+            .addGroup(proxVencLayout.createSequentialGroup()
+                .addComponent(jLabel4)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        proxVencLayout.setVerticalGroup(
+            proxVencLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(proxVencLayout.createSequentialGroup()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextArea2, javax.swing.GroupLayout.DEFAULT_SIZE, 17, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -685,6 +751,26 @@ public class BizEnt extends javax.swing.JFrame {
             pantallaVencimientos1.updateVencimientosJTable();
             
             BizEnt.db.updateMovimientosTableModel(BizEnt.db.getCuentasComboBoxModel().getElementAt(cmbCuentas.getSelectedIndex()));
+            
+            String[] a=BizEnt.db.getAlertasVencimientos();
+            boolean b=false;
+            jPanelVenc.setLayout(new BoxLayout(jPanelVenc,BoxLayout.Y_AXIS));
+            if (!a[0].equals("")){
+                jTextArea1.setBackground(jPanelVenc.getBackground());
+                jTextArea1.setText(a[0]);
+                jPanelVenc.add(vencHoy);
+                b=true;
+            }
+            if (!a[1].equals("")){
+                jTextArea2.setBackground(jPanelVenc.getBackground());
+                jTextArea2.setText(a[1]);
+                jPanelVenc.add(proxVenc);
+                b=true;
+            }
+            if(b)
+            {
+                JOptionPane.showMessageDialog(this.getParent(), jPanelVenc, "Vencimientos", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }//GEN-LAST:event_mnuArchivoAbrirActionPerformed
 
@@ -984,7 +1070,7 @@ public class BizEnt extends javax.swing.JFrame {
         File file=new File(txtCarpeta.getText().concat(".xls"));
         if (file.exists())
         {
-            int res=JOptionPane.showConfirmDialog(jDialogExportar, "El archivo \""+a+"\" ya existe.\n¿Desea sobreescribirlo?", "Archivo Existente",JOptionPane.YES_NO_OPTION);
+            int res=JOptionPane.showConfirmDialog(jDialogExportar, "El archivo \""+a+"\" ya existe.\n¿Desea sobrescribirlo?", "Archivo Existente",JOptionPane.YES_NO_OPTION);
 
             if(res==1)
             {
@@ -1156,7 +1242,9 @@ public class BizEnt extends javax.swing.JFrame {
     private javax.swing.JDialog jDialogExportar;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -1177,12 +1265,15 @@ public class BizEnt extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanelVenc;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JMenuItem mnuArchivoAbrir;
     private javax.swing.JMenuItem mnuArchivoNuevo;
     private javax.swing.JMenuItem mnuCategAgregar;
@@ -1191,6 +1282,8 @@ public class BizEnt extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuSalir;
     private javax.swing.JTable movimientosTable;
     private bizent.PantallaVencimientos pantallaVencimientos1;
+    private javax.swing.JPanel proxVenc;
     private javax.swing.JTextField txtCarpeta;
+    private javax.swing.JPanel vencHoy;
     // End of variables declaration//GEN-END:variables
 }

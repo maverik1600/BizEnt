@@ -57,6 +57,7 @@ public interface Database {
     public void updateVencimientosTableModel();
     public void updateVencimientosTableModel(java.util.Date f, java.util.Date e);
     public ArrayList <Calendar> getVencimientosMes(Calendar f);
+    public String[] getAlertasVencimientos();
     
         /* ********************/
     /* Módulo Inversiones */
