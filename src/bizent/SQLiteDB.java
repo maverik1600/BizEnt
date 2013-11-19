@@ -885,7 +885,7 @@ System.out.println(BizEnt.db.getCuenta(newMovimiento.getCuenta().getId()).getSal
                 int a=rset.getInt("id");
                 v=getVencimiento(a);
                 c.setTime(v.getFecha());
-                prox=prox+c.get(Calendar.DATE)+"/"+c.get(Calendar.MONTH)+"/"+c.get(Calendar.YEAR)+"   "+v.getCateg()+": "+v.getNombre();
+                prox=prox+c.get(Calendar.DATE)+"/"+c.get(Calendar.MONTH)+"/"+c.get(Calendar.YEAR)+"   "+v.getCateg()+": "+v.getNombre()+"\n";
             }
         } catch (SQLException ex) {
             System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
@@ -928,6 +928,10 @@ System.out.println(BizEnt.db.getCuenta(newMovimiento.getCuenta().getId()).getSal
             while (rset.next()) {
             Calendar cal=Calendar.getInstance();
             cal.setTime(dateFormat.parse(rset.getString("fecha")));
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
             v.add(cal);
             }
         } catch (SQLException ex) {

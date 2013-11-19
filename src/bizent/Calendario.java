@@ -400,10 +400,12 @@ public void rearmar()
                      b[i].setBackground(n);
                      if (venc.isEmpty()==false)
                     {
+                        
                         Calendar min=Collections.min(venc);
                         if ((min.get(Calendar.DATE)-1)==(i))
                         {
                             b[i].setBackground(c);
+                            venc.remove(min);
                             while(venc.contains(min))
                             {
                                 venc.remove(min);
