@@ -99,7 +99,8 @@ public final class SQLiteDB implements Database {
         if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (6, 3, 'Transferencia')")) { return true; }
 
         /* Inversiones pid = 4 */
-        if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (50, 4, 'Plazo Fijo')"))    { return true; }
+        if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (50, 2, 'Plazo Fijo')"))    { return true; } //Egresos
+        if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (51, 3, 'Plazo Fijo')"))    { return true; } //Ingresos
 
         /**
          * Egresos pid = 2
