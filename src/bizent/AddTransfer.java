@@ -39,7 +39,7 @@ public class AddTransfer extends javax.swing.JDialog {
 
             cmbOrigen.getModel().setSelectedItem(movOrigen.getCuenta());
             cmbDestino.getModel().setSelectedItem(movDestino.getCuenta());
-            
+
             txtMonto.setText(Double.toString(movOrigen.getMonto()));
             calendar.setTime(movOrigen.getFecha());
         }
@@ -293,11 +293,12 @@ public class AddTransfer extends javax.swing.JDialog {
 
         return false;
     }
-    
+
     private boolean updateTransfer() {
         /* Verifico cuenta origen y destino */
-        if (cmbOrigen.getSelectedIndex() == cmbDestino.getSelectedIndex()) {
+        if (cmbOrigen.getSelectedItem().toString().equals(cmbDestino.getSelectedItem().toString())) {
             BizEnt.showERROR(this, "La cuenta de origen y destino no puede ser la misma.");
+            return true;
         }
 
         /* Actualizo el monto del movimiento */
@@ -305,28 +306,26 @@ public class AddTransfer extends javax.swing.JDialog {
             Double.parseDouble(txtMonto.getText());
         } catch (java.lang.NumberFormatException e) {
             BizEnt.showERROR(this, "El monto debe ser tipo numerico.");
+            return true;
         }
 
         movOrigen.setFecha(this.getFecha());
         movDestino.setFecha(this.getFecha());
 
-        movOrigen.setCuenta((Cuenta) cmbOrigen.getModel().getElementAt(cmbOrigen.getSelectedIndex()));
-        movDestino.setCuenta((Cuenta) cmbDestino.getModel().getElementAt(cmbDestino.getSelectedIndex()));
+        movOrigen.setCuenta((Cuenta) cmbOrigen.getSelectedItem());
+        movDestino.setCuenta((Cuenta) cmbDestino.getSelectedItem());
 
         movOrigen.setMonto(Double.parseDouble(txtMonto.getText()));
         movDestino.setMonto(Double.parseDouble(txtMonto.getText()));
-
-//        if (movOrigen.getCuenta().getId()  == ((Cuenta) cmbOrigen.getModel().getElementAt(cmbOrigen.getSelectedIndex())).getId() &&
-//            movDestino.getCuenta().getId() == ((Cuenta) cmbDestino.getModel().getElementAt(cmbDestino.getSelectedIndex())).getId()) {
-            /* Actualizamos el movimiento */
-            if (BizEnt.db.updateMovimiento(movOrigen)) {
+        
+        /* Actualizamos el movimiento */
+        if (BizEnt.db.updateMovimiento(movOrigen)) {
+            BizEnt.showERROR(this, "El movimiento no pudo ser actualizado.");
+        } else {
+            if (BizEnt.db.updateMovimiento(movDestino)) {
                 BizEnt.showERROR(this, "El movimiento no pudo ser actualizado.");
-            } else {
-                if (BizEnt.db.updateMovimiento(movDestino)) {
-                    BizEnt.showERROR(this, "El movimiento no pudo ser actualizado.");
-                }
             }
-//        }
+        }
         
         return false;
     }
