@@ -255,6 +255,7 @@ public class AddTransfer extends javax.swing.JDialog {
         /* Verifico cuenta origen y destino */
         if (cmbOrigen.getSelectedIndex() == cmbDestino.getSelectedIndex()) {
             BizEnt.showERROR(this, "La cuenta de origen y destino no puede ser la misma.");
+            return true;
         }
 
         /* Actualizo el monto del movimiento */
@@ -262,6 +263,7 @@ public class AddTransfer extends javax.swing.JDialog {
             Double.parseDouble(txtMonto.getText());
         } catch (java.lang.NumberFormatException e) {
             BizEnt.showERROR(this, "El monto debe ser tipo numerico.");
+            return true;
         }
 
         movOrigen.setFecha(this.getFecha());

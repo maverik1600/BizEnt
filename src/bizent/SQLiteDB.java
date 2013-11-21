@@ -92,15 +92,14 @@ public final class SQLiteDB implements Database {
         if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (1, 0, 'Categorías')"))  { return true; }
         if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (2, 1, 'Egresos')"))     { return true; }
         if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (3, 1, 'Ingresos')"))    { return true; }
-        //if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (4, 1, 'Inversiones')")) { return true; }
 
         /* Transferencias */
         if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (5, 2, 'Transferencia')")) { return true; }
         if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (6, 3, 'Transferencia')")) { return true; }
 
         /* Inversiones pid = 4 */
-        if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (50, 2, 'Plazo Fijo')"))    { return true; } //Egresos
-        if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (51, 3, 'Plazo Fijo')"))    { return true; } //Ingresos
+        if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (50, 2, 'Plazo Fijo')"))    { return true; }
+        if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (51, 3, 'Plazo Fijo')"))    { return true; }
 
         /**
          * Egresos pid = 2

@@ -97,7 +97,6 @@ public class BizEnt extends javax.swing.JFrame {
         jMenu5 = new javax.swing.JMenu();
         mnuArchivoNuevo = new javax.swing.JMenuItem();
         mnuArchivoAbrir = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         mnuSalir = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
@@ -577,6 +576,7 @@ public class BizEnt extends javax.swing.JFrame {
                 mnuArchivoNuevoActionPerformed(evt);
             }
         });
+        mnuArchivoNuevo.setVisible(false);
         jMenu5.add(mnuArchivoNuevo);
 
         mnuArchivoAbrir.setText("Abrir");
@@ -586,11 +586,8 @@ public class BizEnt extends javax.swing.JFrame {
                 mnuArchivoAbrirActionPerformed(evt);
             }
         });
+        mnuArchivoAbrir.setVisible(false);
         jMenu5.add(mnuArchivoAbrir);
-
-        jMenuItem5.setText("Exportar");
-        jMenuItem5.setEnabled(false);
-        jMenu5.add(jMenuItem5);
         jMenu5.add(jSeparator1);
 
         mnuSalir.setText("Salir");
@@ -975,8 +972,12 @@ public class BizEnt extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                if (BizEnt.db.getMovimiento(Integer.parseInt(movimientosTable.getValueAt(selectedRow, 0).toString())).getCategoria().getId() == 5 ||
-                        BizEnt.db.getMovimiento(Integer.parseInt(movimientosTable.getValueAt(selectedRow, 0).toString())).getCategoria().getId() == 6) {
+                if (BizEnt.db.getMovimiento(Integer.parseInt(movimientosTable.getValueAt(selectedRow, 0).toString())).getDescri().equals("Saldo Inicial") ||
+                    BizEnt.db.getMovimiento(Integer.parseInt(movimientosTable.getValueAt(selectedRow, 0).toString())).getCategoria().getId() == 50 ||
+                    BizEnt.db.getMovimiento(Integer.parseInt(movimientosTable.getValueAt(selectedRow, 0).toString())).getCategoria().getId() == 51) {
+                    return;
+                } else if (BizEnt.db.getMovimiento(Integer.parseInt(movimientosTable.getValueAt(selectedRow, 0).toString())).getCategoria().getId() == 5 ||
+                           BizEnt.db.getMovimiento(Integer.parseInt(movimientosTable.getValueAt(selectedRow, 0).toString())).getCategoria().getId() == 6) {
                     AddTransfer dialog = new AddTransfer(new javax.swing.JFrame(), true, Integer.parseInt(movimientosTable.getValueAt(selectedRow, 0).toString()));
                     dialog.setLocationRelativeTo(null); // Center on the screen
                     dialog.setVisible(true);
@@ -1010,13 +1011,26 @@ public class BizEnt extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbCuentasActionPerformed
 
     private void btnDeleteMovimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteMovimientoActionPerformed
-        int retVal = JOptionPane.showConfirmDialog(this, "Desea eliminar el movimiento seleccionado?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
-        if (retVal == 0) {
-            int        selectedRow = movimientosTable.getSelectionModel().getLeadSelectionIndex();
-            Movimiento movimiento  = BizEnt.db.getMovimiento(Integer.parseInt(movimientosTable.getValueAt(selectedRow, 0).toString()));
+        int selectedRow = movimientosTable.getSelectionModel().getLeadSelectionIndex();
 
-            if (BizEnt.db.deleteMovimiento(movimiento)) {
-                BizEnt.showERROR(this, "El movimiento no pudo ser eliminado.");
+        if (BizEnt.db.getMovimiento(Integer.parseInt(movimientosTable.getValueAt(selectedRow, 0).toString())).getDescri().equals("Saldo Inicial") ||
+                BizEnt.db.getMovimiento(Integer.parseInt(movimientosTable.getValueAt(selectedRow, 0).toString())).getCategoria().getId() == 50 ||
+                BizEnt.db.getMovimiento(Integer.parseInt(movimientosTable.getValueAt(selectedRow, 0).toString())).getCategoria().getId() == 51) {
+            return;
+        } else {
+            int retVal = JOptionPane.showConfirmDialog(this, "Desea eliminar el movimiento seleccionado?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+            if (retVal == 0) {
+                Movimiento movimiento  = BizEnt.db.getMovimiento(Integer.parseInt(movimientosTable.getValueAt(selectedRow, 0).toString()));
+                if (BizEnt.db.deleteMovimiento(movimiento)) {
+                    BizEnt.showERROR(this, "El movimiento no pudo ser eliminado.");
+                }
+
+                if (movimiento.getIdMovRel() > 0) {
+                    movimiento = BizEnt.db.getMovimiento(movimiento.getIdMovRel());
+                    if (BizEnt.db.deleteMovimiento(movimiento)) {
+                        BizEnt.showERROR(this, "El movimiento no pudo ser eliminado.");
+                    }
+                }
             }
         }
     }//GEN-LAST:event_btnDeleteMovimientoActionPerformed
@@ -1251,7 +1265,6 @@ public class BizEnt extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
