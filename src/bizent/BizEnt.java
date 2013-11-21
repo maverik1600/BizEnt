@@ -854,18 +854,23 @@ public class BizEnt extends javax.swing.JFrame {
              * Tampoco será posible eliminar categorías que posean subcategorías.  Para
              * poder eliminarlas se deberá eliminar primero todas las subcategorías.
              */
-            if (categoria.getId() > 3) {
-                mnuCategEliminar.setEnabled(selectedNode.isLeaf());
-                mnuCategEditar.setEnabled(true);
-            } else {
-                mnuCategEliminar.setEnabled(false);
-                mnuCategEditar.setEnabled(false);
-            }
-
-            if (categoria.getId() == 1) {
+            if (categoria.getId() == 1  ||
+                categoria.getId() == 5  ||
+                categoria.getId() == 6  ||
+                categoria.getId() == 50 ||
+                categoria.getId() == 51) {
                 mnuCategAgregar.setEnabled(false);
+                mnuCategEditar.setEnabled(false);
+                mnuCategEliminar.setEnabled(false);
+            } else if (categoria.getId() == 2 ||
+                       categoria.getId() == 3) {
+                mnuCategAgregar.setEnabled(true);
+                mnuCategEditar.setEnabled(false);
+                mnuCategEliminar.setEnabled(false);
             } else {
                 mnuCategAgregar.setEnabled(true);
+                mnuCategEditar.setEnabled(true);
+                mnuCategEliminar.setEnabled(selectedNode.isLeaf());
             }
 
             updateMovimientosTable();
