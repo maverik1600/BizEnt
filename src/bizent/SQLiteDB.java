@@ -131,8 +131,6 @@ public final class SQLiteDB implements Database {
         if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (5000, 3, 'Sueldos')"))    { return true; }
         if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (6000, 3, 'Alquileres')")) { return true; }
         if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (7000, 3, 'Regalos')"))    { return true; }
-        if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (8000, 3, 'Regalos')"))    { return true; }
-
         
         /****************************************************************
          * 

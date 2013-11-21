@@ -37,13 +37,7 @@ public class BizEnt extends javax.swing.JFrame {
         checkMenus();
 
         /* Connect to the database */
-        /*
-        if (!connectToDB("xxx")) {
-            return;
-        }
-//        updateCuentasJTable();
-        updateCategoriasJTree();
-        */
+        openDB("BizEnt");
     }
 
     /**
@@ -725,54 +719,55 @@ public class BizEnt extends javax.swing.JFrame {
                 JOptionPane.INFORMATION_MESSAGE, null, getDatabases(), null);
 
         /* Connect to the database if it was selected */
-        if (database != null) {
-            /* Connect to the database */
-            if (!connectToDB(database)) {
-                return;
-            }
-            BizEnt.db.loadDataModels();
-
-            /* Update cuentasJTable */
-            cuentasTable.setModel(BizEnt.db.getCuentasTableModel());
-            updateCuentasJTable();
-
-            cmbCuentas.setModel(BizEnt.db.getCuentasComboBoxModel());
-
-            /* Update movimientosTable */
-            movimientosTable.setModel(BizEnt.db.getMovimientosTableModel());
-            updateMovimientosJTable();
-
-            inv1.getTable().setModel(BizEnt.db.getInversionesTableModel());
-            inv1.updateInversionesJTable();
-            updateCategoriasJTree();
-
-            pantallaVencimientos1.getTable().setModel(BizEnt.db.getVencimientosTableModel());
-            pantallaVencimientos1.getTable().getColumn("Fecha").setCellRenderer(new DateRenderer("dd-MM-yyyy"));
-            pantallaVencimientos1.updateVencimientosJTable();
-            
-            BizEnt.db.updateMovimientosTableModel(BizEnt.db.getCuentasComboBoxModel().getElementAt(cmbCuentas.getSelectedIndex()));
-            
-            String[] a=BizEnt.db.getAlertasVencimientos();
-            boolean b=false;
-            jPanelVenc.setLayout(new BoxLayout(jPanelVenc,BoxLayout.Y_AXIS));
-            if (!a[0].equals("")){
-                jTextArea1.setBackground(jPanelVenc.getBackground());
-                jTextArea1.setText(a[0]);
-                jPanelVenc.add(vencHoy);
-                b=true;
-            }
-            if (!a[1].equals("")){
-                jTextArea2.setBackground(jPanelVenc.getBackground());
-                jTextArea2.setText(a[1]);
-                jPanelVenc.add(proxVenc);
-                b=true;
-            }
-            if(b)
-            {
-                JOptionPane.showMessageDialog(this.getParent(), jPanelVenc, "Vencimientos", JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
+        if (database != null) { openDB(database); }
     }//GEN-LAST:event_mnuArchivoAbrirActionPerformed
+
+    private void openDB(String database) {
+        if (!connectToDB(database)) {
+            return;
+        }
+        BizEnt.db.loadDataModels();
+
+        /* Update cuentasJTable */
+        cuentasTable.setModel(BizEnt.db.getCuentasTableModel());
+        updateCuentasJTable();
+      
+        cmbCuentas.setModel(BizEnt.db.getCuentasComboBoxModel());
+
+        /* Update movimientosTable */
+        movimientosTable.setModel(BizEnt.db.getMovimientosTableModel());
+        updateMovimientosJTable();
+
+        inv1.getTable().setModel(BizEnt.db.getInversionesTableModel());
+        inv1.updateInversionesJTable();
+        updateCategoriasJTree();
+
+        pantallaVencimientos1.getTable().setModel(BizEnt.db.getVencimientosTableModel());
+        pantallaVencimientos1.getTable().getColumn("Fecha").setCellRenderer(new DateRenderer("dd-MM-yyyy"));
+        pantallaVencimientos1.updateVencimientosJTable();
+
+//        BizEnt.db.updateMovimientosTableModel(BizEnt.db.getCuentasComboBoxModel().getElementAt(cmbCuentas.getSelectedIndex()));
+
+        String[] a=BizEnt.db.getAlertasVencimientos();
+        boolean b=false;
+        jPanelVenc.setLayout(new BoxLayout(jPanelVenc,BoxLayout.Y_AXIS));
+        if (!a[0].equals("")){
+            jTextArea1.setBackground(jPanelVenc.getBackground());
+            jTextArea1.setText(a[0]);
+            jPanelVenc.add(vencHoy);
+            b=true;
+        }
+        if (!a[1].equals("")){
+            jTextArea2.setBackground(jPanelVenc.getBackground());
+            jTextArea2.setText(a[1]);
+            jPanelVenc.add(proxVenc);
+            b=true;
+        }
+        if(b)
+        {
+            JOptionPane.showMessageDialog(this.getParent(), jPanelVenc, "Vencimientos", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
 
     /**
      * Eliminar Categoría
