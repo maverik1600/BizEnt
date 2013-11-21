@@ -92,7 +92,7 @@ public final class SQLiteDB implements Database {
         if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (1, 0, 'Categorías')"))  { return true; }
         if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (2, 1, 'Egresos')"))     { return true; }
         if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (3, 1, 'Ingresos')"))    { return true; }
-        if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (4, 1, 'Inversiones')")) { return true; }
+        //if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (4, 1, 'Inversiones')")) { return true; }
 
         /* Transferencias */
         if (executeUpdate("INSERT INTO categorias (id, pid, nombre) values (5, 2, 'Transferencia')")) { return true; }
